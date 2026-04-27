@@ -1,0 +1,17 @@
+# 1. C++ Build Artifacts
+*.o
+*.out
+*.exe
+build/
+ilzo
+# 2. macOS Hidden & Debug Files
+.DS_Store
+*.dSYM/
+# 3. Editor Settings
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+# 4. Chess Engine Data & Logs
+*.fen
+*.epd
+*.log

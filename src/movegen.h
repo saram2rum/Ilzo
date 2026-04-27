@@ -1,0 +1,11 @@
+#pragma once
+#include "position.h"
+
+namespace Movegen {
+    Bitboard getWhitePawnPushes(const Position& pos);
+    Bitboard getBlackPawnPushes(const Position& pos);
+    Bitboard getWhitePawnLeftAttacks(const Position& pos);
+    Bitboard getWhitePawnRigthAttacks(const Position& pos);
+    Bitboard getBlackPawnLeftAttacks(const Position& pos);
+    Bitboard getBlackPawnRightAttacks(const Position& pos);
+}
