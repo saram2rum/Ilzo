@@ -42,24 +42,24 @@ void Position::initStartPos() {
 }
 
 void Position::loadFEN(const std::string& fen) {
-    // 1. 일단 기존 체스판을 싹 비웁니다.
+    // 1. 일단 기존 체스판을 초기화
     std::memset(pieces, 0, sizeof(pieces));
     std::memset(colors, 0, sizeof(colors));
     allPieces = 0ULL;
 
-    // 2. FEN은 8랭크(맨 윗줄) A열부터 시작합니다.
+    // 2. FEN은 8랭크(맨 윗줄) A열부터 시작
     int rank = 7;
     int file = 0;
 
     for (char c : fen) {
-        if (c == ' ') break; // 기물 배치 파트가 끝나면 일단 스톱!
+        if (c == ' ') break; // 기물 배치 파트가 끝나면 정지
 
         if (c == '/') {
             rank--;   // 다음 줄로 넘어감
             file = 0; // 다시 A열부터 시작
         } 
         else if (std::isdigit(c)) {
-            file += (c - '0'); // '3' 같은 문자에서 '0'을 빼면 실제 정수 3이 됩니다. 그만큼 칸 건너뛰기!
+            file += (c - '0'); // '3' 같은 문자에서 '0'을 빼면 실제 정수 3이 됨. 그만큼 칸 건너뛰기
         } 
         else {
             // 대문자면 WHITE, 아니면 BLACK
@@ -74,6 +74,7 @@ void Position::loadFEN(const std::string& fen) {
             else if (lower == 'r') pc = ROOK;
             else if (lower == 'q') pc = QUEEN;
             else if (lower == 'k') pc = KING;
+            else continue; // 컴파일 에러때문에 굳이 넣음
 
             // 판별된 기물을 체스판에 박아넣고, 다음 칸으로 이동
             putPiece(col, pc, rank * 8 + file);
@@ -94,7 +95,7 @@ void Position::printBitboard(Bitboard bb) {
     std::cout << "\n   A B C D E F G H\n\n";
 }
 
-// 외부(cpp)에서 구현할 때는 반드시 소속(Position::)을 밝혀줍니다!
+// 외부(cpp)에서 구현할 때는 반드시 소속(Position::)을 밝혀주기
 void Position::printBoard() {
     const char pieceChars[COLOR_NB][PIECE_NB] = {
         {'P', 'N', 'B', 'R', 'Q', 'K'}, // WHITE
@@ -110,13 +111,16 @@ void Position::printBoard() {
             char c = ' '; // 기본은 빈칸
 
             // 12개의 비트보드를 뒤져서 기물을 찾음
-            for (int color = WHITE; color < COLOR_NB; ++color) {
-                for (int piece = PAWN; piece < PIECE_NB; ++piece) {
-                    if (checkBit(pieces[color][piece], square)) {
-                        c = pieceChars[color][piece];
+            if (checkBit(allPieces, square)) { // 기물이 있는 칸만 루프 돌기
+                for (int color = WHITE; color < COLOR_NB; ++color) {
+                    for (int piece = PAWN; piece < PIECE_NB; ++piece) {
+                        if (checkBit(pieces[color][piece], square)) {
+                            c = pieceChars[color][piece];
+                        }
                     }
                 }
             }
+            
             std::cout << " " << c << " |";
         }
         std::cout << "\n  +---+---+---+---+---+---+---+---+\n";
