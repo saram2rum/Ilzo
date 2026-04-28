@@ -12,9 +12,10 @@ private:
     }
 
 public:
-    Bitboard pieces[COLOR_NB][PIECE_NB];
-    Bitboard colors[COLOR_NB];
-    Bitboard allPieces;
+    // 태어날 때 무조건 0으로 꽉 채워서 초기화 (아예 기물도 안올린 체스판)
+    Bitboard pieces[COLOR_NB][PIECE_NB] = {0};
+    Bitboard colors[COLOR_NB] = {0};
+    Bitboard allPieces = 0ULL;
     
     void initStartPos();
     void loadFEN(const std::string& fen);
