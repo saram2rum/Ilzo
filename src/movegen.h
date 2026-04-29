@@ -11,4 +11,5 @@ namespace Movegen {
     Bitboard getWhitePawnDoublePushes(const Position& pos);
     Bitboard getBlackPawnDoublePushes(const Position& pos);
     Bitboard getKnightMoves(const Position& pos, Color c);
+    Bitboard getKingMoves(const Position& pos, Color c);
 }

@@ -49,7 +49,27 @@ namespace Movegen {
         attacks |= (knights >>  6) & NOT_AB_FILE;  // 동동남 (우로 2칸 가니까 AB 방패)
         attacks |= (knights >> 10) & NOT_GH_FILE;  // 서서남 (좌로 2칸 가니까 GH 방패)
 
-        // 3. 최종 필터링: 공격 가능한 모든 칸 중에서 "내 기물이 있는 곳(~colors[c])"만 제외
+        // 3. 최종 필터링: 공격 가능한 모든 칸 중에서 내 기물이 있는 곳(~colors[c])만 제외
         return attacks & ~pos.colors[c];
+    }
+
+    Bitboard getKingMoves(const Position& pos, Color c) {
+        Bitboard k = pos.pieces[c][KING];
+        
+        // 1. 좌우로 1칸씩 밀기 (이때만 방패가 필요)
+        // H열이 아닌 놈만 오른쪽으로(<< 1), A열이 아닌 놈만 왼쪽으로(>> 1)
+        Bitboard attacks = ((k & NOT_H_FILE) << 1) | ((k & NOT_A_FILE) >> 1);
+        
+        // 2. 현재 킹의 위치(k) + 좌우 공격 위치(attacks)를 합침
+        // adjacent는 킹을 포함한 3칸짜리 가로 막대기
+        Bitboard adjacent = k | attacks;
+        
+        // 3. 그 3칸짜리 막대기를 통째로 위로(<< 8) 아래로(>> 8) 밀어버림
+        // (위아래는 하드웨어가 막아주니까 방패 불필요)
+        attacks |= (adjacent << 8) | (adjacent >> 8);
+        
+        // 4. 마지막으로 내 기물이 있는 곳만 빼서 반환
+        return attacks & ~pos.colors[c];
+
     }
 }
