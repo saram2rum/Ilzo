@@ -9,15 +9,15 @@ namespace Movegen {
     }
 
     Bitboard getWhitePawnLeftAttacks(const Position& pos) {
-        return (pos.pieces[WHITE][PAWN] << 7) & NOT_A_FILE; & pos.colors[BLACK];
+        return (pos.pieces[WHITE][PAWN] << 7) & NOT_A_FILE & pos.colors[BLACK];
     }
 
-    Bitboard getWhitePawnRigthAttacks(const Position& pos) {
-        return (pos.pieces[WHITE][PAWN] << 9) & NOT_H_FILE; & pos.colors[BLACK];
+    Bitboard getWhitePawnRightAttacks(const Position& pos) {
+        return (pos.pieces[WHITE][PAWN] << 9) & NOT_H_FILE & pos.colors[BLACK];
     }
 
     Bitboard getBlackPawnLeftAttacks(const Position& pos) {
-        return (pos.pieces[BLACK][PAWN] >> 9) & NOT_A_FILE & pos.colors[BLACK];
+        return (pos.pieces[BLACK][PAWN] >> 9) & NOT_A_FILE & pos.colors[WHITE];
     }
     
     Bitboard getBlackPawnRightAttacks(const Position& pos) {
